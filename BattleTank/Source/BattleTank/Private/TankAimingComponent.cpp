@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
+//#include "Kismet/GameplayStatics.h"
+#include "BattleTank.h"
 #include "TankAimingComponent.h"
-#include "Components/StaticMeshComponent.h"
-#include "Components/ActorComponent.h"
-#include "GameFramework/Actor.h"
+//#include "Components/ActorComponent.h"
+//#include "GameFramework/Actor.h"
 
 
 // Sets default values for this component's properties
@@ -37,7 +37,33 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Firing at %f"), LaunchSpeed);
+	if (!Barrel) { return; }
+	FVector OutLaunchVelocity(0);
+	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+	const FCollisionResponseParams ResponseParam;
+	const TArray<AActor*> ActorsToIgnore;
+
+	//calc the out velocity
+	if (UGameplayStatics::SuggestProjectileVelocity
+			(this,
+				OutLaunchVelocity,
+				StartLocation, HitLocation, 
+				LaunchSpeed, 
+				0, 
+				0, 
+				0, 
+				ESuggestProjVelocityTraceOption::DoNotTrace
+				//ResponseParam, 
+				//ActorsToIgnore,	(For drawing debug arcs)
+				//1
+			)
+		)
+	{
+		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+		auto TankName = GetOwner()->GetName();
+		UE_LOG(LogTemp, Warning, TEXT(" %s Aiming at %s"), *TankName, *AimDirection.ToString());
+	}
+	//if no launch velocity, don't print
 }
 
 void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
