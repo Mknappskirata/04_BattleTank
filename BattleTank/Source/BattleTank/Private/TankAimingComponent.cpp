@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-//#include "Kismet/GameplayStatics.h"
-#include "BattleTank.h"
 #include "TankAimingComponent.h"
+#include "TankBarrel.h"
+#include "BattleTank.h"
+
 //#include "Components/ActorComponent.h"
 //#include "GameFramework/Actor.h"
 
@@ -45,7 +46,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	//if no launch velocity, don't print
 }
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
@@ -55,10 +56,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
-	UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *DeltaRotator.ToString());
 
-	//find difference between current barrel and aimdirection rotation
-	//if different
-		//move the barrel to the correct rotation, given max elevation speed & frame time
+	Barrel->Elevate(5); //TODO remove rando number
 }
 
