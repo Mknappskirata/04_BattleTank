@@ -10,16 +10,25 @@
 //forward declaration
 class UTankAimingComponent;
 class UTankBarrel; 
+class UTankTurret;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
 	GENERATED_BODY()
 public:
+
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetBarrelReference(UTankBarrel* BarrelToSet);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void SetTurretReference(UTankTurret* TurretToSet);
+
 	void AimAt(FVector HitLocation);
 
-	UFUNCTION(BlueprintCallable, CAtegory = Setup)
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
+	UFUNCTION(BlueprintCallable, Category = Firing)
+		void Fire();
 
 protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
@@ -34,6 +43,6 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-		float LaunchSpeed = 10000; //TODO find default value for the launch speed
+		float LaunchSpeed =10000; //TODO find default value for the launch speed
 	
 };
