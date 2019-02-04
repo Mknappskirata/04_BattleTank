@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -19,13 +18,13 @@ public:
 	void Elevate(float RelativeSpeed);
 
 private:
-	UPROPERTY(EditDefaultOnly, Category = Setup)
+	UPROPERTY(EditAnywhere, Category = Setup)
 		float MaxDegreesPerSecond = 10; //sensible default
 
-	UPROPERTY(EditDefaultOnly, Category = Setup)
+	UPROPERTY(EditAnywhere, Category = Setup)
 		float MaxElevationDegrees = 40; 
 
-	UPROPERTY(EditDefaultOnly, Category = Setup)
+	UPROPERTY(EditAnywhere, Category = Setup)
 		float MinElevationDegrees = 0;
 
 
